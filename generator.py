@@ -57,16 +57,33 @@ class TimeGenerator(BaseTestDataGenerator):
     def __init__(self):
         BaseTestDataGenerator.__init__(self)
         self.mixGenerator = MixGenerator()
-    def generateOneItem(self, length):
+        self.dateGenerator = DateGenerator()
+    def generateOneItem(self, length = 0):
         time = ""
         time += self.chooseOne(23)
         time += ":"
         time += self.chooseOne(59)
         time += ":"
         time += self.chooseOne(59)
+        time = self.dateGenerator.generateOneItem() + " " + time
         return time
     def chooseOne(self, max):
         return str(random.randint(0, max))
+
+class DateGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+        self.mixGenerator = MixGenerator()
+    def generateOneItem(self, length = 0):
+        time = ""
+        time += self.chooseOne(2014, 2014)
+        time += "-"
+        time += self.chooseOne(1, 12)
+        time += "-"
+        time += self.chooseOne(1, 28)
+        return time
+    def chooseOne(self, min, max):
+        return str(random.randint(min, max))
 
 class TestDataGenerator:
     def __init__(self):
@@ -158,6 +175,8 @@ if __name__ == "__main__":
     #testNumberGenerator = EmailGenerator()
     #print testNumberGenerator.generateOneItem()
     #testNumberGenerator = TimeGenerator()
+    #print testNumberGenerator.generateOneItem()
+    #testNumberGenerator = DateGenerator()
     #print testNumberGenerator.generateOneItem()
 
     testDataGenerator = TestDataGenerator()
