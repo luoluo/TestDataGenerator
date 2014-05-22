@@ -1,12 +1,8 @@
 import random
 from myConfig import MyConfig
 class BaseTestDataGenerator:
-    def __init__(self, type):
-        self.type = type
+    def __init__(self):
         self.Source = []
-        self.Source.append(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
-        self.Source.append(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
-
     def generateOneItem(self, length):
         entity = []
         while len(entity) < length:
@@ -14,21 +10,76 @@ class BaseTestDataGenerator:
         return ''.join(entity)
 
     def chooseOne(self):
-        curSource = self.Source[self.type]
+        curSource = self.Source
         return curSource[random.randint(0, len(curSource)-1)]
-
 
 class NumberGeneretor(BaseTestDataGenerator):
     def __init__(self):
         BaseTestDataGenerator.__init__(self)
+        self.Source = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+class StringGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+        self.Source = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+class MixGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+        self.Source = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+class IPGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+    def generateOneItem(self, length = 4):
+        entity = []
+        count = 0
+        while count < length:
+            entity.append(self.chooseOne()) 
+            entity.append(".")
+            count += 1
+        return ''.join(entity).rstrip(".")
+    def chooseOne(self):
+        return str(random.randint(0, 255))
+
+class EmailGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+        self.mixGenerator = MixGenerator()
+    def generateOneItem(self, length):
+        email = self.mixGenerator.generateOneItem(6)
+        email += ("@")
+        email += (self.mixGenerator.generateOneItem(2))
+        email += (".com")
+        return email
+
+class TimeGenerator(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
+        self.mixGenerator = MixGenerator()
+    def generateOneItem(self, length):
+        time = ""
+        time += self.chooseOne(23)
+        time += ":"
+        time += self.chooseOne(59)
+        time += ":"
+        time += self.chooseOne(59)
+        return time
+    def chooseOne(self, max):
+        return str(random.randint(0, max))
+
 class TestDataGenerator:
     def __init__(self):
-        self.numberGenerator = BaseTestDataGenerator(0)
-        self.charGenerator = BaseTestDataGenerator(1)
+        self.numberGenerator = NumberGeneretor()
+        self.charGenerator = StringGenerator()
+        self.mixGenerator = MixGenerator()
+        self.timeGenerator= TimeGenerator()
+        self.iPGenerator = IPGenerator()
+        self.emailGenerator = EmailGenerator()
         self.dataDescriptions = []
         self.amount = 0
         #self.loadDescription()
-        self.loadDescriptionFromFIle("generate.cfg")
+        #self.loadDescriptionFromFIle("generate.cfg")
         self.splitChar = '\t'
 
     def loadDescription(self):
@@ -53,14 +104,26 @@ class TestDataGenerator:
     def generateOneBit(self, dataDescription):
         type = dataDescription.getType()
         length = dataDescription.getLength()
-        generator = self.getBaseGenerator(type)
+        generator = self.getGenerator(type)
         return generator.generateOneItem(length)
 
-    def getBaseGenerator(self, type):
+        self.mixGenerator = MixGenerator()
+        self.mixGenerator = TimeGenerator()
+        self.iPGenerator = IPGenerator()
+        self.emailGenerator = EmailGenerator()
+    def getGenerator(self, type):
         if type == 0:
             return self.numberGenerator
-        else:
+        elif type == 1:
             return self.charGenerator
+        elif type == 2:
+            return self.mixGenerator
+        elif type == 3:
+            return self.timeGenerator
+        elif type == 4:
+            return self.iPGenerator
+        elif type == 5:
+            return self.emailGenerator
 
     def generate(self):
         count = 0
@@ -84,6 +147,19 @@ class DataDescription:
         return self.split
 
 if __name__ == "__main__":
+    #testNumberGenerator = NumberGeneretor()
+    #print testNumberGenerator.generateOneItem(12)
+    #testNumberGenerator = StringGenerator()
+    #print testNumberGenerator.generateOneItem(12)
+    #testNumberGenerator = MixGenerator()
+    #print testNumberGenerator.generateOneItem(12)
+    #testNumberGenerator = IPGenerator()
+    #print testNumberGenerator.generateOneItem()
+    #testNumberGenerator = EmailGenerator()
+    #print testNumberGenerator.generateOneItem()
+    #testNumberGenerator = TimeGenerator()
+    #print testNumberGenerator.generateOneItem()
+
     testDataGenerator = TestDataGenerator()
+    testDataGenerator.loadDescriptionFromFIle("generate.cfg")
     testDataGenerator.generate()
-#    testDataGenerator.loadDescriptionFromFIle("generate.cfg")

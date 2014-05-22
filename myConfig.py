@@ -8,7 +8,7 @@ class MyConfig:
 
     def getInt(self, section1, section2):
         return int(self.config.get(section1, section2))
-        
+
     def getString(self, section1, section2):
         return self.config.get(section1, section2)
 
