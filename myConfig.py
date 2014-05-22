@@ -6,6 +6,9 @@ class MyConfig:
         self.config = ConfigParser.RawConfigParser(allow_no_value=True)
         self.config.read(configureFile)
 
+    def getInt(self, section1, section2):
+        return int(self.config.get(section1, section2))
+        
     def getString(self, section1, section2):
         return self.config.get(section1, section2)
 
@@ -20,6 +23,16 @@ class MyConfig:
         list = map(int, charList)
         return list
 
+    def getListOfList(self, section1, section2):
+        lists = []
+        liststr = self.getString(section1, section2)
+        liststrs = liststr.lstrip("[").rstrip("]").split(";")
+        for liststr in liststrs:
+            list = liststr.strip().lstrip("[").rstrip("]").replace(",", "").split()
+            list = map(int, list)
+            lists.append(list)
+        return lists
+
     def getDict(self, section1, section2):
         #covert string to map
         dictstr = self.config.get(section1, section2)
@@ -32,3 +45,5 @@ if __name__ == "__main__":
     print myConfig.getList("mysql", "list")
     print myConfig.getIntList("mysql", "list")
     print myConfig.getDict("mysql", "dict")
+    print myConfig.getListOfList("mysql", "listOfList")
+

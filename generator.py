@@ -1,4 +1,5 @@
 import random
+from myConfig import MyConfig
 class BaseTestDataGenerator:
     def __init__(self, type):
         self.type = type
@@ -17,12 +18,17 @@ class BaseTestDataGenerator:
         return curSource[random.randint(0, len(curSource)-1)]
 
 
+class NumberGeneretor(BaseTestDataGenerator):
+    def __init__(self):
+        BaseTestDataGenerator.__init__(self)
 class TestDataGenerator:
     def __init__(self):
         self.numberGenerator = BaseTestDataGenerator(0)
         self.charGenerator = BaseTestDataGenerator(1)
         self.dataDescriptions = []
-        self.loadDescription()
+        self.amount = 0
+        #self.loadDescription()
+        self.loadDescriptionFromFIle("generate.cfg")
         self.splitChar = '\t'
 
     def loadDescription(self):
@@ -30,9 +36,12 @@ class TestDataGenerator:
         self.dataDescriptions.append(DataDescription(1, 6))
         self.dataDescriptions.append(DataDescription(1, 19))
 
-    def loadDescriptionFromFIle(self):
-        #TODO
-        return
+    def loadDescriptionFromFIle(self, fileName):
+        myConfig = MyConfig(fileName)
+        descriptions = myConfig.getListOfList("description1", "description")
+        self.amount = myConfig.getInt("description1", "amount")
+        for description in descriptions:
+            self.dataDescriptions.append(DataDescription(description[0], description[1]))
 
     def generateOne(self):
         entity = []
@@ -53,6 +62,12 @@ class TestDataGenerator:
         else:
             return self.charGenerator
 
+    def generate(self):
+        count = 0
+        while count < self.amount:
+            print self.generateOne()
+            count += 1
+
 class DataDescription:
     def __init__(self, type, length):
         self.type = type
@@ -70,4 +85,5 @@ class DataDescription:
 
 if __name__ == "__main__":
     testDataGenerator = TestDataGenerator()
-    print testDataGenerator.generateOne()
+    testDataGenerator.generate()
+#    testDataGenerator.loadDescriptionFromFIle("generate.cfg")
