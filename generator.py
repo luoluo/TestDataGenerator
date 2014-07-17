@@ -35,7 +35,7 @@ class IPGenerator(BaseTestDataGenerator):
         entity = []
         count = 0
         while count < length:
-            entity.append(self.chooseOne()) 
+            entity.append(self.chooseOne())
             entity.append(".")
             count += 1
         return ''.join(entity).rstrip(".")
@@ -68,22 +68,28 @@ class TimeGenerator(BaseTestDataGenerator):
         time = self.dateGenerator.generateOneItem() + " " + time
         return time
     def chooseOne(self, max):
-        return str(random.randint(0, max))
+        timePart = str(random.randint(0, max))
+        if len(timePart) == 1:
+            timePart = '0' + timePart
+        return timePart
 
 class DateGenerator(BaseTestDataGenerator):
     def __init__(self):
         BaseTestDataGenerator.__init__(self)
         self.mixGenerator = MixGenerator()
     def generateOneItem(self, length = 0):
-        time = ""
-        time += self.chooseOne(2014, 2014)
-        time += "-"
-        time += self.chooseOne(1, 12)
-        time += "-"
-        time += self.chooseOne(1, 28)
-        return time
+        date = ""
+        date += self.chooseOne(2014, 2014)
+        date += "-"
+        date += self.chooseOne(1, 12)
+        date += "-"
+        date += self.chooseOne(1, 28)
+        return date
     def chooseOne(self, min, max):
-        return str(random.randint(min, max))
+        datePart = str(random.randint(min, max))
+        if len(datePart) == 1:
+            datePart = '0' + datePart
+        return datePart
 
 class TestDataGenerator:
     def __init__(self):
