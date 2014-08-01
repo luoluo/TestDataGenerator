@@ -169,22 +169,22 @@ class DataDescription:
     def getSplit(self):
         return self.split
 
-if __name__ == "__main__":
-    #testNumberGenerator = NumberGeneretor()
-    #print testNumberGenerator.generateOneItem(12)
-    #testNumberGenerator = StringGenerator()
-    #print testNumberGenerator.generateOneItem(12)
-    #testNumberGenerator = MixGenerator()
-    #print testNumberGenerator.generateOneItem(12)
-    #testNumberGenerator = IPGenerator()
-    #print testNumberGenerator.generateOneItem()
-    #testNumberGenerator = EmailGenerator()
-    #print testNumberGenerator.generateOneItem()
-    #testNumberGenerator = TimeGenerator()
-    #print testNumberGenerator.generateOneItem()
-    #testNumberGenerator = DateGenerator()
-    #print testNumberGenerator.generateOneItem()
-
-    testDataGenerator = TestDataGenerator()
-    testDataGenerator.loadDescriptionFromFIle("generate.cfg")
-    testDataGenerator.generate()
+#if __name__ == "__main__":
+#    #testNumberGenerator = NumberGeneretor()
+#    #print testNumberGenerator.generateOneItem(12)
+#    #testNumberGenerator = StringGenerator()
+#    #print testNumberGenerator.generateOneItem(12)
+#    #testNumberGenerator = MixGenerator()
+#    #print testNumberGenerator.generateOneItem(12)
+#    #testNumberGenerator = IPGenerator()
+#    #print testNumberGenerator.generateOneItem()
+#    #testNumberGenerator = EmailGenerator()
+#    #print testNumberGenerator.generateOneItem()
+#    #testNumberGenerator = TimeGenerator()
+#    #print testNumberGenerator.generateOneItem()
+#    #testNumberGenerator = DateGenerator()
+#    #print testNumberGenerator.generateOneItem()
+#
+#    testDataGenerator = TestDataGenerator()
+#    testDataGenerator.loadDescriptionFromFIle("generate.cfg")
+#    testDataGenerator.generate()

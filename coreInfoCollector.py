@@ -5,7 +5,7 @@ class CoreInfoCollector:
         self.inputFile = inputFile
 
     def collect(self):
-        for infoDescription in self.infoDescriptions: 
+        for infoDescription in self.infoDescriptions:
             self.collectOne(infoDescription)
 
     def collectOne(self, infoDescription):
